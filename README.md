@@ -51,8 +51,8 @@
 
 | Option              | Default        | Description                                                    |
 | ------------------- |:-------------: | --------------------------------------------------------------:|
-| disablePreview      | false          | for the preview menu with miniature of your image in the popup |
-| disableSlider       | false          | for switch next image or previous image                        |
+| disablePreview      | false          | preview menu with miniature of your image in the popup |
+| disableSlider       | false          | switch next image or previous image                        |
 
 ----------
 ## Licence ##
