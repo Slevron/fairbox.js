@@ -14,11 +14,11 @@
 ----------
 ## Getting Started ##
 - **Installation**
- - **Include the CSS in your <head> tag :**
+ - **Include the CSS in your `<head>` tag :**
 
 		    <link href="path/to/fairbox.css rel="stylesheet">
 
- - **Include the JS after your </body> tag in the bottom :**
+ - **Include the JS after your `</body>` tag in the bottom :**
 
 		    <script src="path/to/fairbox.js></script>
 
@@ -35,7 +35,7 @@
  - **Youtube video add  `data-youtube` and put your Youtube_ID video:** 
 	 
 
-	 - www.youtube.com/watch?v="**Youtube_ID**"
+	 - youtube.com/watch?v="**Youtube_ID**"
 
 		    <img src="images1" data-fairbox data-youtube="Youtube_ID" />
 
