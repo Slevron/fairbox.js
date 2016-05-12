@@ -1,0 +1,98 @@
+.showbox_body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; }
+
+.showbox_container_nav {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  transition: all .2s; }
+
+.showbox_media {
+  position: absolute;
+  top: 50%;
+  left: -200%;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  max-height: 100%;
+  transform-origin: 50%;
+  transform: translateY(-50%);
+  transition: all .2s; }
+
+.showbox {
+  position: absolute;
+  top: 0;
+  z-index: 999;
+  background: #000;
+  width: 100%; }
+
+.showbox_icon {
+  background: white;
+  font-size: 25px;
+  float: right;
+  padding: 10px 15px;
+  transform-origin: 50%; }
+
+.fa-chevron-right {
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  right: 0; }
+
+.fa-chevron-left {
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  left: 0; }
+
+.showbox_container_preview {
+  width: 1050px;
+  margin: auto;
+  height: 60px !important;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  white-space: nowrap; }
+
+.showbox_container_preview {
+  position: absolute;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 1050px;
+  height: 60px !important;
+  margin: auto;
+  left: 0;
+  right: 0;
+  transform: translateY(15%);
+  transform-origin: 50%;
+  bottom: 15%;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.5); }
+  @media screen and (max-width: 1040px) {
+    .showbox_container_preview {
+      display: none; } }
+
+.showbox_second_preview {
+  transition: 1s all; }
+
+.preview_image {
+  width: 77.5px;
+  height: 40px;
+  margin: 5px;
+  transition: 0.2s all;
+  -webkit-filter: grayscale(80%);
+  filter: grayscale(80%); }
+  .preview_image img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%; }
+  .preview_image:hover {
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0); }
+  .preview_image.active {
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0); }
