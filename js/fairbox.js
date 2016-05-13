@@ -167,21 +167,9 @@ Create_icon.prototype.arrow_action = function(element){
 Create_icon.prototype.switchPreview = function(condition,direction){
     $('.preview_image').removeClass('active');
     Element.addClass('active'); 
-    var widthContainer = $('.showbox_container_preview').width();
-    if(condition === 0 && Element.index() !== 0 && Element.index() !== 1){
-        if(direction === '-'){
-           multiplicateur++; 
-        }else{
-           multiplicateur--;
-        }
-        this.switchDirection(direction);     
-    }
+    $('.showbox_second_preview').animate( { scrollLeft: Element.position().left }, 1000);
+};
 
-};
-Create_icon.prototype.switchDirection = function(dir){  
-    var translation = multiplicateur * 1050;
-    $('.showbox_second_preview').css('transform','translateX(-'+translation+'px)');
-};
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -324,7 +312,7 @@ Preview_object.prototype.createImage = function(type, class_object, source, cont
     this.object.appendTo('.'+container);
 };
 Preview_object.prototype.addWidth = function(){
-    $(this.object).css('width',$(this.object).children().width() * $(this.object).children().length);
+    $(this.object).css('width',$(this.object).parent().width());
 };
 Preview_object.prototype.addActive = function(media){
     if($(media).attr('src') === $(this.object).attr('src')){

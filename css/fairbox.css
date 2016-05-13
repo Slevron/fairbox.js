@@ -63,13 +63,13 @@
   overflow-x: hidden;
   overflow-y: hidden;
   width: 1050px;
-  height: 60px !important;
+  height: 50px !important;
   margin: auto;
   left: 0;
   right: 0;
   transform: translateY(15%);
   transform-origin: 50%;
-  bottom: 15%;
+  bottom: 0;
   white-space: nowrap;
   background: rgba(0, 0, 0, 0.5); }
   @media screen and (max-width: 1040px) {
@@ -77,13 +77,12 @@
       display: none; } }
 
 .showbox_second_preview {
-  transition: 1s all; }
+  overflow-x: scroll; }
 
 .preview_image {
-  width: 77.5px;
+  width: 60px;
   height: 40px;
   margin: 5px;
-  transition: 0.2s all;
   -webkit-filter: grayscale(80%);
   filter: grayscale(80%); }
   .preview_image img {
