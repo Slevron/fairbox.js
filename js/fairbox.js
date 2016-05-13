@@ -77,7 +77,6 @@ Create_object.prototype.createDiv = function(type, class_object){
 };
 Create_object.prototype.createImage = function(type, class_object, source){
     this.object = $(type, {
-        id: id_media_image,
         class: class_object,
         src: source
     });
@@ -136,51 +135,38 @@ Create_icon.prototype.close_icon = function(){
 };
 Create_icon.prototype.arrow_icon = function(name, element){
     var that = this;   
-    var nbElements = 11;
-    var currentIndex = Element.index() % nbElements;
-    var previousIndex = Element.prev().index() % nbElements;
     if(name === 'direction-left'){
         if(Element.index() > 0){
             Element = element || Element.prev();
             that.arrow_action(Element);
-            that.switchPreview(previousIndex,'+');                     
+            that.switchPreview();                     
         }
     }else{
         if(Element.index() < nombre_media - 1){
             Element = element || Element.next();
             that.arrow_action(Element); 
-            that.switchPreview(currentIndex,'-');                   
+            that.switchPreview();                   
         }
     }
 };
 Create_icon.prototype.arrow_action = function(element){ 
     $('.showbox_container').empty();
-    if(element.data('youtube')){
-            source    = element.find('img').data('youtube') || element.data('youtube');
-            showbox_media   = new Create_object('<iframe>', class_media ,null ,urlYoutube+source+'?autoplay=1');
-    }else{
-            source    = element.find('img').attr('src') || element.attr('src');
-            showbox_media   = new Create_object('<img>', class_media ,source ,null); 
-    }
+    FairBox.init_media(element);
     Element = element;
 };
-Create_icon.prototype.switchPreview = function(condition,direction){
+Create_icon.prototype.switchPreview = function(){
     $('.preview_image').removeClass('active');
-    Element.addClass('active'); 
+    Element.addClass('active');
     $('.showbox_second_preview').animate( { scrollLeft: Element.position().left }, 1000);
+    
 };
 
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
         define(['jquery'], factory);
     } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
         module.exports = factory(require('jquery'));
     } else {
-        // Browser globals (root is window)
         root.Fairbox = factory(root.jQuery);
     }
 }(this, function ($) {
@@ -211,35 +197,21 @@ Fairbox.prototype.init_element = function(element, condition){
         var showbox_container_preview = new Create_object('<div>',class_container_preview,null,null);
     }
     var showbox_second_preview  = new Preview_object('<div>', class_second_preview, null, class_container_preview);
-    if(element.data('youtube')){
-            source    = element.find('img').data('youtube') || element.data('youtube');
-            showbox_media   = new Create_object('<iframe>', class_media ,null ,urlYoutube+source+'?autoplay=1');
-    }else{
-            source    = element.find('img').attr('src') || element.attr('src');
-            showbox_media   = new Create_object('<img>', class_media ,source ,null); 
-    }
+    this.init_media(element);
     $('img[data-fairbox]').each(function() {
         var imgsrc          = $(this).attr("src");
         var data            = $(this).data("youtube") ;
-        var id_preview;
-        if(data){
-            id_preview = 'video';
-        }else{
-            id_preview = 'image';
-        }
-        showbox_preview  = new Preview_object('<img>', 'preview_image  '+id_preview, imgsrc, class_second_preview , data);    
-        showbox_preview.addActive(showbox_media);
+        showbox_preview  = new Preview_object('<img>', 'preview_image', imgsrc, class_second_preview , data);    
     }); 
-    $('.preview_image').click(function(){
-        if($(this).index() !== Element.index()){
-            if($(this).index() > Element.index()){
-                showbox_right.arrow_icon('direction-right',$(this));
-            }else{
-                showbox_left.arrow_icon('direction-left',$(this));
-            }
-        }
-    });
-    showbox_second_preview.addWidth();
+};
+Fairbox.prototype.init_media = function(element){
+    if(element.data('youtube')){
+        source    = element.find('img').data('youtube') || element.data('youtube');
+        showbox_media   = new Create_object('<iframe>', class_media ,null ,urlYoutube+source+'?autoplay=1');
+    }else{
+        source    = element.find('img').attr('src') || element.attr('src');
+        showbox_media   = new Create_object('<img>', class_media ,source ,null); 
+    }
 };
 Fairbox.prototype.init_icon = function(condition){
     showbox_close           = new Create_icon('close','<i>',class_icon_close);
@@ -258,7 +230,6 @@ Fairbox.prototype.init_action = function(){
     }; 
 };
 Fairbox.prototype.init_input = function(close,right,left,class_close,class_right,class_left){  
-    multiplicateur = 0;
     $('.'+class_close).click(function(event) {
         close.close_icon();
     });
@@ -289,7 +260,7 @@ Fairbox.prototype.mouseMove = function(object){
         timer=setTimeout(function(){$('.'+class_container_nav).css('opacity',0);},5000);
     });
 };
-FairBox = new Fairbox()
+FairBox = new Fairbox();
 return FairBox;
 }));
 
@@ -304,20 +275,38 @@ function Preview_object(type, class_object, source, container, alt){
 }
 Preview_object.prototype.createImage = function(type, class_object, source, container, youtube){
     this.object = $(type, {
-        id: id_media_image,
         class: class_object,
         src: source,
         data: {'youtube': youtube}
     });
     this.object.appendTo('.'+container);
+    if(class_object === class_second_preview){
+        this.addWidth();
+    }else{
+        this.addActive(showbox_media);
+        this.clickPreview();
+    }
 };
 Preview_object.prototype.addWidth = function(){
     $(this.object).css('width',$(this.object).parent().width());
 };
 Preview_object.prototype.addActive = function(media){
     if($(media).attr('src') === $(this.object).attr('src')){
+        Element = $(this.object);
+        $('.showbox_second_preview').animate( { scrollLeft: Element.position().left }, 1000);
         $(this.object).addClass('active');
     }
+};
+Preview_object.prototype.clickPreview = function(){   
+    $(this.object).click(function(){
+        if($(this).index() !== Element.index()){
+            if($(this).index() > Element.index()){
+                showbox_right.arrow_icon('direction-right',$(this));
+            }else{
+                showbox_left.arrow_icon('direction-left',$(this));
+            }
+        }
+    });
 };
 var html = 'html,body';
 var class_container             = 'showbox';
@@ -330,7 +319,6 @@ var class_icon_close            = 'showbox_icon close fa fa-times';
 var class_icon_left             = 'showbox_icon direction-left fa fa-chevron-left';
 var class_icon_right            = 'showbox_icon direction-right fa fa-chevron-right';
 var class_body                  = 'showbox_body';
-var id_media_image              = 'image';
 var class_media_image           = 'img[data-fairbox]';
 var urlYoutube                  = 'https://www.youtube.com/embed/';
 var oldScroll,source,sourceImage,showbox_margin,nombre_media, showbox_media, Element, multiplicateur, showbox_preview, showbox_close, showbox_left, showbox_right;
