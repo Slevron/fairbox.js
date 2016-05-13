@@ -1,17 +1,3 @@
-(function(root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory(require('jquery'));
-    } else {
-        // Browser globals (root is window)
-        root.Fairbox = factory(root.jQuery);
-    }
-}(this, function ($) {
 function Action_popup(type, class_object){
     this.type = type;
     this.class  = class_object;
@@ -196,6 +182,20 @@ Create_icon.prototype.switchDirection = function(dir){
     var translation = multiplicateur * 1050;
     $('.showbox_second_preview').css('transform','translateX(-'+translation+'px)');
 };
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory(require('jquery'));
+    } else {
+        // Browser globals (root is window)
+        root.Fairbox = factory(root.jQuery);
+    }
+}(this, function ($) {
 function Fairbox(){
     var that = this;
     $('img[data-fairbox]').click(function(){
@@ -203,8 +203,6 @@ function Fairbox(){
             that.initPopup($(this));
         }
     });
-
-    
 }
 Fairbox.prototype.option = function(option) {
     this.disablePreview = option.disablePreview;
@@ -221,7 +219,7 @@ Fairbox.prototype.init_element = function(element, condition){
     var showbox_container       = new Create_object('<div>',class_container,null,null);
     var showbox_container_nav   = new Create_object('<div>',class_container_nav,null,null);    
     var showbox_container_media = new Create_object('<div>',class_container_media,null,null);
-    if(condition !== false){
+    if(condition !== true){
         var showbox_container_preview = new Create_object('<div>',class_container_preview,null,null);
     }
     var showbox_second_preview  = new Preview_object('<div>', class_second_preview, null, class_container_preview);
@@ -257,7 +255,7 @@ Fairbox.prototype.init_element = function(element, condition){
 };
 Fairbox.prototype.init_icon = function(condition){
     showbox_close           = new Create_icon('close','<i>',class_icon_close);
-    if(condition !== false){
+    if(condition !== true){
         showbox_left            = new Create_icon('direction-left','<i>',class_icon_left);
         showbox_right           = new Create_icon('direction-right','<i>',class_icon_right);
     }
@@ -303,6 +301,10 @@ Fairbox.prototype.mouseMove = function(object){
         timer=setTimeout(function(){$('.'+class_container_nav).css('opacity',0);},5000);
     });
 };
+FairBox = new Fairbox()
+return FairBox;
+}));
+
 function Preview_object(type, class_object, source, container, alt){
     this.type   = type;
     this.class  = class_object;
@@ -345,7 +347,7 @@ var class_media_image           = 'img[data-fairbox]';
 var urlYoutube                  = 'https://www.youtube.com/embed/';
 var oldScroll,source,sourceImage,showbox_margin,nombre_media, showbox_media, Element, multiplicateur, showbox_preview, showbox_close, showbox_left, showbox_right;
 var nombre_preview = 12;
-return FairBox = new Fairbox();
-}));
+var FairBox;
+
 
 
