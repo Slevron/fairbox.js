@@ -50,7 +50,7 @@
 		})
 
 | Option              | Default        | Description                                                    |
-| ------------------- |:-------------: | --------------------------------------------------------------:|
+| ------------------- |:-------------: | :--------------------------------------------------------------:|
 | disablePreview      | false          | preview menu with miniature of your image in the popup |
 | disableSlider       | false          | switch next image or previous image                        |
 
