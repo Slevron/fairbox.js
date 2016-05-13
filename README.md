@@ -1,5 +1,4 @@
 # Fairbox.js
-----------
 
 ## Download ##
 
