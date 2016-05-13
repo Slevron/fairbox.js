@@ -1,0 +1,27 @@
+{
+  "name": "fairbox.js",
+  "version": "1.0.0",
+  "description": "----------",
+  "main": "./js/fairbox.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Slevron/fairbox.js.git"
+  },
+  "keywords": [
+    "fairbox",
+    "popup",
+    "showbox",
+    "gallery",
+    "image",
+    "plugin"
+  ],
+  "author": "Slevron",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Slevron/fairbox.js/issues"
+  },
+  "homepage": "https://github.com/Slevron/fairbox.js#readme"
+}
