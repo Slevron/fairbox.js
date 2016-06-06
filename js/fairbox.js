@@ -31,22 +31,22 @@ Action_popup.prototype.resize_popup = function(class_object){
     $('.'+class_object).css('height', this.height);
 };
 
-function Create_object(type, class_object, source, url){
+function Create_object(type, class_object, source, url, data){
     this.type   = type;
     this.class  = class_object;
     this.src    = source;
     this.url    = url;
     this.object = null;
-    this.switchType(this.type, this.class, this.src, this.url);
-
+    this.data   = data;
+    this.switchType(this.type, this.class, this.src, this.url, this.data);
 }
-Create_object.prototype.switchType = function(type, class_object, source, url){
+Create_object.prototype.switchType = function(type, class_object, source, url, data){
     var that = this;
     if(source === null){
         if(url === null){
             this.createDiv(type, class_object);
         }else{
-            this.createMedia(type, class_object, url);
+            this.createMedia(type, class_object, url, data);
             that.init_pos(class_object,{'left': 0, 'right': 0});
         }
     }else{
@@ -82,14 +82,14 @@ Create_object.prototype.createImage = function(type, class_object, source){
     });
     this.object.appendTo('.'+class_container_media);
 };
-Create_object.prototype.createMedia = function(type, class_object, url){
+Create_object.prototype.createMedia = function(type, class_object, url, data){
     this.object = $(type, {  
         class: class_object,
         src: url,
         frameborder: 0,
         width: $(window).width(),
         height: $(window).height()
-    }); 
+    }).attr('data-src', data); 
     this.object.appendTo('.'+class_container_media); 
 };
 Create_object.prototype.init_pos = function(class_object, direction){
@@ -199,15 +199,20 @@ Fairbox.prototype.init_element = function(element, condition){
     var showbox_second_preview  = new Preview_object('<div>', class_second_preview, null, class_container_preview);
     this.init_media(element);
     $('img[data-fairbox]').each(function() {
+        var classVideo = '';
         var imgsrc          = $(this).attr("src");
-        var data            = $(this).data("youtube") ;
-        showbox_preview  = new Preview_object('<img>', 'preview_image', imgsrc, class_second_preview , data);    
+        if($(this).data("youtube")){
+           var data = $(this).data("youtube");
+           classVideo = 'video' 
+        }
+        showbox_preview  = new Preview_object('<img>', 'preview_image '+classVideo, imgsrc, class_second_preview , data);   
     }); 
 };
 Fairbox.prototype.init_media = function(element){
     if(element.data('youtube')){
         source    = element.find('img').data('youtube') || element.data('youtube');
-        showbox_media   = new Create_object('<iframe>', class_media ,null ,urlYoutube+source+'?autoplay=1');
+        sourceImg    = element.find('img').attr('src') || element.attr('src');
+        showbox_media   = new Create_object('<iframe>', class_media ,null ,urlYoutube+source+'?autoplay=1',sourceImg);
     }else{
         source    = element.find('img').attr('src') || element.attr('src');
         showbox_media   = new Create_object('<img>', class_media ,source ,null); 
@@ -276,9 +281,8 @@ function Preview_object(type, class_object, source, container, alt){
 Preview_object.prototype.createImage = function(type, class_object, source, container, youtube){
     this.object = $(type, {
         class: class_object,
-        src: source,
-        data: {'youtube': youtube}
-    });
+        src: source
+    }).attr('data-youtube', youtube);
     this.object.appendTo('.'+container);
     if(class_object === class_second_preview){
         this.addWidth();
@@ -291,7 +295,8 @@ Preview_object.prototype.addWidth = function(){
     $(this.object).css('width',$(this.object).parent().width());
 };
 Preview_object.prototype.addActive = function(media){
-    if($(media).attr('src') === $(this.object).attr('src')){
+    console.log(media);
+    if($(media).attr('src') === $(this.object).attr('src') || $(media).attr('data') === $(this.object).attr('src')){
         Element = $(this.object);
         $('.showbox_second_preview').animate( { scrollLeft: Element.position().left }, 1000);
         $(this.object).addClass('active');
@@ -322,7 +327,7 @@ var class_body                  = 'showbox_body';
 var class_media_image           = 'img[data-fairbox]';
 var urlYoutube                  = 'https://www.youtube.com/embed/';
 var oldScroll,source,sourceImage,showbox_margin,nombre_media, showbox_media, Element, multiplicateur, showbox_preview, showbox_close, showbox_left, showbox_right;
-var nombre_preview = 12;
+var nombre_preview = 1;
 var FairBox;
 
 
